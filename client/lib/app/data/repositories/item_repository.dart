@@ -2,6 +2,7 @@ import 'package:client/app/api/items/items.api.dart';
 import 'package:client/app/core/exception/exception.dart';
 import 'package:client/app/core/failure/failure.dart';
 import 'package:client/app/data/models/item_model.dart';
+import 'package:client/app/data/models/item_update_model.dart';
 import 'package:fpdart/fpdart.dart';
 
 class ItemsRepositories {
@@ -41,9 +42,23 @@ class ItemsRepositories {
   }
 
   Future<Either<Failure, void>> createItems(
-      {required ItemModel item}) async {
+      {required ItemUpdateModel item}) async {
     try {
       await remoteDataSource.createItem(item: item);
+      return const Right(null);
+    } on ClientException catch (e) {
+      return Left(ClientFailure(e.message));
+    } on UnauthorizedException catch (e) {
+      return Left(UnauthorizedFailure(e.message));
+    } catch (e) {
+      return const Left(ServerFailure("Something wrong in server"));
+    }
+  }
+
+  Future<Either<Failure, void>> updateItems(
+      {required ItemUpdateModel item, required int id}) async {
+    try {
+      await remoteDataSource.updateItem(item: item, id: id);
       return const Right(null);
     } on ClientException catch (e) {
       return Left(ClientFailure(e.message));
@@ -67,6 +82,7 @@ class ItemsRepositories {
       return const Left(ServerFailure("Something wrong in server"));
     }
   }
+
   Future<Either<Failure, void>> deleteItems({required List<int> ids}) async {
     try {
       await remoteDataSource.deleteItems(ids: ids);

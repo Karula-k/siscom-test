@@ -8,7 +8,7 @@ class ApiWrapper {
   ApiWrapper({required this.client});
 
   final http.Client client;
-  Future<Map<String, String>> get header async {
+  Map<String, String> get header {
     return {
       "Content-Type": "application/json",
     };
@@ -18,7 +18,7 @@ class ApiWrapper {
     String url,
   ) async {
     http.Response response =
-        await client.get(Uri.parse("$base$url"), headers: await header);
+        await client.get(Uri.parse("$base$url"), headers: header);
 
     return response;
   }
@@ -26,12 +26,11 @@ class ApiWrapper {
   Future<http.Response> post(
     String url, {
     Object? body,
-    bool jwt = true,
   }) async {
     http.Response response = await client.post(
       Uri.parse("$base$url"),
       body: body,
-      headers: jwt ? await header : null,
+      headers: header,
     );
 
     return response;
@@ -40,12 +39,11 @@ class ApiWrapper {
   Future<http.Response> put(
     String url, {
     Object? body,
-    bool jwt = true,
   }) async {
     http.Response response = await client.put(
       Uri.parse("$base$url"),
       body: body,
-      headers: jwt ? await header : null,
+      headers: header,
     );
 
     return response;
@@ -54,23 +52,21 @@ class ApiWrapper {
   Future<http.Response> patch(
     String url, {
     Object? body,
-    bool jwt = true,
   }) async {
     http.Response response = await client.patch(
       Uri.parse("$base$url"),
       body: body,
-      headers: jwt ? await header : null,
+      headers: header,
     );
 
     return response;
   }
 
-  Future<http.Response> delete(String url,
-      {Object? body, bool jwt = true}) async {
+  Future<http.Response> delete(String url, {Object? body}) async {
     http.Response response = await client.delete(
       Uri.parse("$base$url"),
       body: body,
-      headers: jwt ? await header : null,
+      headers: header,
     );
 
     return response;

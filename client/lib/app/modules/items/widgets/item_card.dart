@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../../../data/models/item_model.dart';
 
 class ItemCard extends StatelessWidget {
@@ -102,8 +103,8 @@ class ItemCard extends StatelessWidget {
                   Expanded(
                     child: _buildInfoChip(
                       context,
-                      Icons.attach_money,
-                      '\$${item.price.toStringAsFixed(2)}',
+                        Icons.attach_money,
+                        'Rp ${NumberFormat('#,##0', 'id_ID').format(item.price)}',
                       Colors.blue,
                     ),
                   ),
