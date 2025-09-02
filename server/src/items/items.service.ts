@@ -6,9 +6,15 @@ import { DatabaseService } from 'src/database/database.service';
 export class ItemsService {
   constructor(private readonly databaseService: DatabaseService) {}
 
-  async findAll({ limit = 10, skip = 0 }: { limit?: number; skip?: number }) {
+  async findAll({
+    limit = 10,
+    offset = 1
+  }: {
+    limit?: number;
+    offset?: number;
+  }) {
     return this.databaseService.items.findMany({
-      skip,
+      skip: (offset - 1) * limit,
       take: limit
     });
   }

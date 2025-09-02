@@ -20,9 +20,9 @@ export class ItemsController {
   @Get()
   findAll(
     @Query('limit', new ParseIntPipe({ optional: true })) limit: number = 10,
-    @Query('skip', new ParseIntPipe({ optional: true })) skip: number = 0
+    @Query('offset', new ParseIntPipe({ optional: true })) offset: number = 1
   ) {
-    return this.itemsService.findAll({ limit, skip });
+    return this.itemsService.findAll({ limit, offset });
   }
   @Get(':id')
   findById(@Param('id', ParseIntPipe) id: number) {

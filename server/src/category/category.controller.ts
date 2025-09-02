@@ -19,9 +19,9 @@ export class CategoryController {
   @Get()
   findAll(
     @Query('limit', new ParseIntPipe({ optional: true })) limit: number = 10,
-    @Query('skip', new ParseIntPipe({ optional: true })) skip: number = 0
+    @Query('offset', new ParseIntPipe({ optional: true })) offset: number = 0
   ) {
-    return this.categoryService.findAll({ limit, skip });
+    return this.categoryService.findAll({ limit, offset });
   }
   @Get(':id')
   findById(@Param('id', ParseIntPipe) id: number) {
