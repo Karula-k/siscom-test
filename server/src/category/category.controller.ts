@@ -19,7 +19,7 @@ export class CategoryController {
   @Get()
   findAll(
     @Query('limit', new ParseIntPipe({ optional: true })) limit: number = 10,
-    @Query('offset', new ParseIntPipe({ optional: true })) offset: number = 0
+    @Query('offset', new ParseIntPipe({ optional: true })) offset: number = 1
   ) {
     return this.categoryService.findAll({ limit, offset });
   }

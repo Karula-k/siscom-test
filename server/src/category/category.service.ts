@@ -8,15 +8,16 @@ export class CategoryService {
 
   async findAll({
     limit = 10,
-    offset = 0
+    offset = 1
   }: {
     limit?: number;
     offset?: number;
   }) {
-    return this.databaseService.category.findMany({
+    const response = await this.databaseService.category.findMany({
       skip: (offset - 1) * limit,
       take: limit
     });
+    return { data: response };
   }
 
   async findById(id: number) {

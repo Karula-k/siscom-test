@@ -13,25 +13,31 @@ export class ItemsService {
     limit?: number;
     offset?: number;
   }) {
-    return this.databaseService.items.findMany({
+    const items = await this.databaseService.items.findMany({
       skip: (offset - 1) * limit,
       take: limit
     });
+    return items;
   }
 
   async findById(id: number) {
-    return this.databaseService.items.findUnique({ where: { id } });
+    return await this.databaseService.items.findUnique({ where: { id } });
   }
 
   async create(data: Prisma.ItemsCreateInput) {
-    return this.databaseService.items.create({ data });
+    return await this.databaseService.items.create({ data });
   }
 
   async update(id: number, data: Prisma.ItemsUpdateInput) {
-    return this.databaseService.items.update({ where: { id }, data });
+    return await this.databaseService.items.update({ where: { id }, data });
   }
 
   async delete(id: number) {
-    return this.databaseService.items.delete({ where: { id } });
+    return await this.databaseService.items.delete({ where: { id } });
+  }
+  async deleteList(ids: number[]) {
+    return await this.databaseService.items.deleteMany({
+      where: { id: { in: ids } }
+    });
   }
 }

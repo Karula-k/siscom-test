@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
   Param,
   ParseIntPipe,
   Post,
@@ -18,31 +19,44 @@ export class ItemsController {
   constructor(private readonly itemsService: ItemsService) {}
 
   @Get()
-  findAll(
+  async findAll(
     @Query('limit', new ParseIntPipe({ optional: true })) limit: number = 10,
     @Query('offset', new ParseIntPipe({ optional: true })) offset: number = 1
   ) {
-    return this.itemsService.findAll({ limit, offset });
+    const data = await this.itemsService.findAll({ limit, offset });
+    return { data };
   }
+
+  @Delete('list')
+  async deleteListId(@Body('ids') ids: number[]) {
+    await this.itemsService.deleteList(ids);
+    return { message: 'deleted successfully' };
+  }
+
   @Get(':id')
   findById(@Param('id', ParseIntPipe) id: number) {
-    return this.itemsService.findById(id);
+    return { data: this.itemsService.findById(id) };
   }
 
   @Post()
-  create(@Body() createItemDto: Prisma.ItemsCreateInput) {
-    return this.itemsService.create(createItemDto);
+  @HttpCode(201)
+  async create(@Body() createItemDto: Prisma.ItemsCreateInput) {
+    await this.itemsService.create(createItemDto);
+    return { message: 'created successfully' };
   }
 
   @Put(':id')
-  update(
+  @HttpCode(201)
+  async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateItemDto: Prisma.ItemsUpdateInput
   ) {
-    return this.itemsService.update(id, updateItemDto);
+    await this.itemsService.update(id, updateItemDto);
+    return { message: 'updated successfully' };
   }
   @Delete(':id')
-  delete(@Param('id', ParseIntPipe) id: number) {
-    return this.itemsService.delete(id);
+  async delete(@Param('id', ParseIntPipe) id: number) {
+    await this.itemsService.delete(id);
+    return { message: 'deleted successfully' };
   }
 }
