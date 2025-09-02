@@ -3,10 +3,11 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ItemsModule } from './items/items.module';
 import { DatabaseModule } from './database/database.module';
+import { CategoryModule } from './category/category.module';
 
 @Module({
-  imports: [ItemsModule, DatabaseModule],
+  imports: [ItemsModule, DatabaseModule, CategoryModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService]
 })
 export class AppModule {}
